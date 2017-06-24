@@ -1,0 +1,77 @@
+{include file="common/_meta,common/foot"/}
+<body>
+<article class="page-container">
+    <form class="form form-horizontal" id="form-admin-add" action="{:url('category/save')}" method="post">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="adminName" name="Name">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">所属分类：</label>
+            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+			<select class="select" name="category" size="1">
+				<!--<option value="0">一级菜单</option>-->
+				<!--<option value="1">总编</option>-->
+				<!--<option value="2">栏目主辑</option>-->
+				<!--<option value="3">栏目编辑</option>-->
+			</select>
+			</span> </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="_LIB_/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="_LIB_/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="_LIB_/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $("#form-admin-add").validate({
+            rules:{
+                Name:{
+                    required:true,
+                    minlength:2,
+                    maxlength:16
+                },
+                category:{
+                    required:true,
+                },
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+        });
+        /*获取分类*/
+        $.ajax({
+            url:"{:url('Category/select')}",
+            type:'POST',
+            dateType:'JSON',
+            success:function (data) {
+                for (var a in data){
+                   var $option = $('<option ></option>>');
+                    $option.val(data[a].id);
+                    $option.text(data[a].name);
+                    var $select = $('.select');
+                    $select .append($option);
+                }
+
+            }
+        })
+    })
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
